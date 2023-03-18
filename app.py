@@ -1,47 +1,50 @@
-ul = "  *  "
-um = "  *  "
-ur = "  *  "
-
-ml = "  *  "
-mm = "  *  "
-mr = "  *  "
-
-bl = "  *  "
-bm = "  *  "
-br = "  *  "
+spots = ["  *  ", "  *  ", "  *  ", "  *  ", "  *  ", "  *  ", "  *  ", "  *  ", "  *  "]
 
 
 def print_board():
-    print(".................")
-    print(ul + "|" + um + "|" + ur)
-    print(".................")
-    print(ml + "|" + mm + "|" + mr)
-    print(".................")
-    print(bl + "|" + bm + "|" + br)
-    print(".................")
+    print("     L     M     R  ")
+    print("U |" + spots[0] + "|" + spots[1] + "|" + spots[2])
+    print("  ..................")
+    print("M |" + spots[3] + "|" + spots[4] + "|" + spots[5])
+    print("  ..................")
+    print("B |" + spots[6] + "|" + spots[7] + "|" + spots[8])
+    print("  ..................")
 
 
-print_board()
-whoseTurn = input("Who is starting? (X or O?) ").upper()
+player = 'X'
 
-move = input(whoseTurn + "'s turn. Where would you like to move? ")
-if move == "ul":
-    ul = "  " + whoseTurn + "  "
-elif move == "um":
-    um = "  " + whoseTurn + "  "
-elif move == "ur":
-    ur = "  " + whoseTurn + "  "
-elif move == "ml":
-    ml = "  " + whoseTurn + "  "
-elif move == "mm":
-    mm = "  " + whoseTurn + "  "
-elif move == "mr":
-    mr = "  " + whoseTurn + "  "
-elif move == "bl":
-    bl = "  " + whoseTurn + "  "
-elif move == "bm":
-    bm = "  " + whoseTurn + "  "
-elif move == "br":
-    br = "  " + whoseTurn + "  "
 
-print_board()
+def make_a_move(p):
+    move = input(p + "'s turn. Where would you like to move? ")
+
+    if move == "ul":
+        spots[0] = "  " + p + "  "
+    elif move == "um":
+        spots[1] = "  " + p + "  "
+    elif move == "ur":
+        spots[2] = "  " + p + "  "
+    elif move == "ml":
+        spots[3] = "  " + p + "  "
+    elif move == "mm":
+        spots[4] = "  " + p + "  "
+    elif move == "mr":
+        spots[5] = "  " + p + "  "
+    elif move == "bl":
+        spots[6] = "  " + p + "  "
+    elif move == "bm":
+        spots[7] = "  " + p + "  "
+    elif move == "br":
+        spots[8] = "  " + p + "  "
+
+    print_board()
+    if p == "X":
+        p = "O"
+    else:
+        p = "X"
+    return p
+
+
+i = 0
+while i < 9:
+    player = make_a_move(player)
+    i += 1
