@@ -1,80 +1,63 @@
 import random
+import player
 
 # global variables
-boardSpot = ["#", "#", "#", "#", "#", "#", "#", "#", "#"]
-randTurn = random.randint(1, 10)
-px = ""
-po = ""
+boardSpot = ["*", "*", "*", "*", "*", "*", "*", "*", "*"]
+rNum = random.randint(1, 10)  # set a random number for use later
 
 
 # this function prints the status of the board
 def print_board():
-    print("  L|M|R")
-    print("U " + boardSpot[0] + "|" + boardSpot[1] + "|" + boardSpot[2])
-    print("M " + boardSpot[3] + "|" + boardSpot[4] + "|" + boardSpot[5])
-    print("B " + boardSpot[6] + "|" + boardSpot[7] + "|" + boardSpot[8])
+    print(boardSpot[0] + "|" + boardSpot[1] + "|" + boardSpot[2])
+    print(boardSpot[3] + "|" + boardSpot[4] + "|" + boardSpot[5])
+    print(boardSpot[6] + "|" + boardSpot[7] + "|" + boardSpot[8])
 
 
 # this gets the player names and assigns them to X or O
-px = input("Decide who wants to be X? Enter your name: \n")
-print(px + " will be X!")
-po = input("Player 2 will be O. Enter your name: \n")
-print(po + " will be O!")
-
-px += "(X)"
-po += "(O)"
-
-# using a random number determines if X or O goes first
-if randTurn <= 5:
-    player1 = px
-    player2 = po
-else:
-    player1 = po
-    player2 = px
-
-# lets players know who goes first
-print(player1 + " will go first!")
+px = player.Player(input("Who will be X? Enter your name: ").title(), "X")
+po = player.Player(input("Who will be O? Enter your name: ").title(), "O")
+print(px.name + " will be X! " + po.name + " will be O!")
 
 
-def make_a_move(x, o):
-    print("move on " + x)
-    if x == "ul":
-        boardSpot[0] = o
-    elif x == "um":
-        boardSpot[1] = o
-    elif x == "ur":
-        boardSpot[2] = o
-    elif x == "ml":
-        boardSpot[3] = o
-    elif x == "mm":
-        boardSpot[4] = o
-    elif x == "mr":
-        boardSpot[5] = o
-    elif x == "bl":
-        boardSpot[6] = o
-    elif x == "bm":
-        boardSpot[7] = o
-    elif x == "br":
-        boardSpot[8] = o
+def make_a_move(p, move_input):
+    if 0 <= int(move_input) <= 8:
+        boardSpot[int(move_input)] = p.symbol
+        # switch players her after a move is made
     else:
-        make_a_move(input("Please submit a proper move "), o)
+        make_a_move(p, input("Please submit a move 0-8 "))
+    print_board()
 
 
-def play_tic_tac_toe(p1, p2):
+def play_tic_tac_toe():
+    # determines if X or O goes first
+    if rNum <= 5:
+        current_player = px
+    else:
+        current_player = po
+
+    # lets players know who goes first
+    print(current_player.name + " will go first!")
     for i in range(1, 10):
-        # answers = {
-        #     1:,
-        #
-        # }
-        # odd iteration = player1's turn while even iterate is player2's turn
-        if i % 2 > 0:
-            make_a_move(input(player1 + " where would you like to move? "), "X")
+        # 3 prints to help us know what iteration we are on
+        print("")
+        print("Turn: " + str(i))
+        print("_______")
+        # get the player's move input
+        move_input = int(input(current_player.full + ", where would you like to move? "))
+        # check if number is between 0 and 8
+        # (need to also check that a number and not a string was entered in the future)
+        if 0 <= move_input <= 8:
+            boardSpot[move_input] = current_player.symbol
+            # switch players after a successful turn
+            if current_player == px:
+                current_player = po
+            else:
+                current_player = px
         else:
-            make_a_move(input(player2 + " where would you like to move? "), "O")
-
+            # if a bad input was entered, give player a chance to enter proper move.
+            # Also, need to not move onto the next iteration until a proper move has been entered
+            move_input = input("Please submit a move 0-8 ")
         print_board()
 
 
-# player1 and firstPlayer and one and the same; dropping firstPlayer
-# play_tic_tac_toe(player1, player2, firstPlayer)
-play_tic_tac_toe("X", "O")
+play_tic_tac_toe()
