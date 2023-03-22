@@ -1,5 +1,6 @@
 import random
 import player
+import os
 
 # global variables
 boardSpot = ["*", "*", "*", "*", "*", "*", "*", "*", "*"]
@@ -20,12 +21,26 @@ print(px.name + " will be X! " + po.name + " will be O!")
 
 
 def make_a_move(p, move_input):
-    if 0 <= int(move_input) <= 8:
-        boardSpot[int(move_input)] = p.symbol
-        # switch players her after a move is made
+    # check that input is a number
+    if move_input.isdigit():
+        # check that the number is between 0 and 8
+        if 0 <= int(move_input) <= 8:
+            # check that spot has not been used yet
+            if boardSpot[int(move_input)] == "*":
+                boardSpot[int(move_input)] = p.symbol
+            else:
+                make_a_move(p, input("Please submit a location that has not been used yet "))
+        else:
+            make_a_move(p, input("Please submit a number between 0-8 "))
     else:
-        make_a_move(p, input("Please submit a move 0-8 "))
-    print_board()
+        make_a_move(p, input("Please submit a number between 0-8 "))
+
+
+def switch_player(p):
+    if p == px:
+        return po
+    else:
+        return px
 
 
 def play_tic_tac_toe():
@@ -38,26 +53,14 @@ def play_tic_tac_toe():
     # lets players know who goes first
     print(current_player.name + " will go first!")
     for i in range(1, 10):
-        # 3 prints to help us know what iteration we are on
-        print("")
+        os.system("cls")
+        # x2 prints to help us know what iteration we are on
         print("Turn: " + str(i))
-        print("_______")
-        # get the player's move input
-        move_input = int(input(current_player.full + ", where would you like to move? "))
-        # check if number is between 0 and 8
-        # (need to also check that a number and not a string was entered in the future)
-        if 0 <= move_input <= 8:
-            boardSpot[move_input] = current_player.symbol
-            # switch players after a successful turn
-            if current_player == px:
-                current_player = po
-            else:
-                current_player = px
-        else:
-            # if a bad input was entered, give player a chance to enter proper move.
-            # Also, need to not move onto the next iteration until a proper move has been entered
-            move_input = input("Please submit a move 0-8 ")
+        print("------")
         print_board()
+        # get the player's move input
+        make_a_move(current_player, input(current_player.full + ", where would you like to move? "))
+        current_player = switch_player(current_player)
 
 
 play_tic_tac_toe()
