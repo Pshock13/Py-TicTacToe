@@ -5,16 +5,17 @@ import os
 os.system('cls')
 # global variables
 boardSpot = ["", "*", "*", "*", "*", "*", "*", "*", "*", "*"]
+moves = {}
 rNum = random.randint(1, 10)  # set a random number for use later
 win_cond = {
-    {"1", "2", "3"},
-    {"4", "5", "6"},
-    {"7", "8", "9"},
-    {"1", "5", "9"},
-    {"3", "5", "7"},
-    {"7", "4", "1"},
-    {"8", "5", "2"},
-    {"9", "6", "3"},
+    ("1", "2", "3"),
+    ("4", "5", "6"),
+    ("7", "8", "9"),
+    ("1", "5", "9"),
+    ("3", "5", "7"),
+    ("7", "4", "1"),
+    ("8", "5", "2"),
+    ("9", "6", "3"),
 }
 
 
@@ -32,6 +33,7 @@ print(px.name + " will be X! " + po.name + " will be O!")
 
 
 def make_a_move(p, move_input):
+    global moves
     # check that input is a number
     if move_input.isdigit():
         # check that the number is between 0 and 8
@@ -39,6 +41,7 @@ def make_a_move(p, move_input):
             # check that spot has not been used yet
             if boardSpot[int(move_input)] == "*":
                 boardSpot[int(move_input)] = p.symbol
+                moves[move_input] = p.symbol
             else:
                 make_a_move(p, input("Please submit a location that has not been used yet "))
         else:
@@ -72,3 +75,5 @@ def play_tic_tac_toe():
 
 
 play_tic_tac_toe()
+for move in moves:
+    print(move + ":" + moves[move])
